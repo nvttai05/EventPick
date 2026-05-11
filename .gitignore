@@ -53,15 +53,5 @@ build/
 dist/
 *.egg-info/
 
-# --- JUPYTER NOTEBOOKS ---
-.ipynb_checkpoints
-*/.ipynb_checkpoints/*
-
-# --- OS SPECIFIC ---
-.DS_Store
-Thumbs.db
-
-# --- CONFIGS (Security) ---
-# Nếu file config có chứa API Key hoặc thông tin cá nhân
-configs/credentials.yaml
-configs/local_settings.py
+NGOẠI LỆ: Không chặn file .gitkeep để giữ cấu trúc thư mục
+!**/.gitkeep
