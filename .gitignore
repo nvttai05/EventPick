@@ -1,0 +1,14 @@
+# Chặn toàn bộ ảnh trong thư mục events
+data/raw/events/
+
+
+# GIỮ LẠI file metadata (vì file này nhẹ và cực kỳ quan trọng)
+!data/metadata/*.csv
+!data/metadata/*.json
+
+# Các file rác của hệ thống và Python
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+.vscode/
