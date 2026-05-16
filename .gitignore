@@ -68,3 +68,14 @@ configs/local_settings.py
 
 NGOẠI LỆ: Không chặn file .gitkeep để giữ cấu trúc thư mục
 !**/.gitkeep
+
+# GIỮ LẠI file metadata (vì file này nhẹ và cực kỳ quan trọng)
+!data/metadata/*.csv
+!data/metadata/*.json
+
+# Các file rác của hệ thống và Python
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+.vscode/

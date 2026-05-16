@@ -1,0 +1,22 @@
+{
+    "last_updated": "2026-05-15 11:56:01",
+    "overall": {
+        "total_images": 11746,
+        "unique_images": 11746,
+        "duplicate_count": 0
+    },
+    "quality_summary": {
+        "avg_brightness": 125.25,
+        "avg_blur_score": 107.59,
+        "avg_width": 4626,
+        "avg_height": 5174
+    },
+    "event_breakdown": {
+        "Event_Kyyeu": 4865,
+        "Event_LopTai": 2445,
+        "Event_PSH": 2132,
+        "Event_SV": 1175,
+        "Event_Trai": 919,
+        "Event_LopToan": 210
+    }
+}
