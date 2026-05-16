@@ -1,0 +1,70 @@
+# --- DATA (CRITICAL: Privacy & Storage) ---
+# Không bao giờ push ảnh thực tế hoặc dữ liệu cá nhân lên Git
+data/raw/
+data/interim/
+data/processed/
+data/embeddings/
+data/temp/
+
+# Giữ lại các file metadata mẫu nếu cần, hoặc ignore toàn bộ csv/json trong data
+data/metadata/*.csv
+data/metadata/*.json
+
+# Nếu bạn muốn giữ lại cấu trúc thư mục trên GitHub mà không có dữ liệu,
+# hãy tạo file .gitkeep trong các thư mục đó và bỏ comment các dòng dưới đây:
+# !data/**/.gitkeep
+
+# --- MODELS (Heavy Files) ---
+# Tránh lưu trữ các file weights nặng hàng trăm MB
+models/pretrained/*
+models/trained/*
+*.pth
+*.pt
+*.h5
+*.onnx
+*.weights
+*.pkl
+
+# --- LOGS & EXPERIMENTS ---
+logs/
+experiments/
+# Cho phép lưu lại các file config của experiment nếu cần
+!experiments/*.yaml
+!experiments/*.json
+
+# --- VISUALIZATIONS & REPORTS ---
+# Tự động hóa việc ignore các kết quả xuất ra để tránh làm loãng commit
+visualizations/dataset_analysis/*
+visualizations/clustering/*
+visualizations/quality_reports/*
+visualizations/embeddings/*
+reports/figures/*
+reports/tables/*
+
+# --- PYTHON & OS ---
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+venv/
+env/
+build/
+dist/
+*.egg-info/
+
+# --- JUPYTER NOTEBOOKS ---
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# --- OS SPECIFIC ---
+.DS_Store
+Thumbs.db
+
+# --- CONFIGS (Security) ---
+# Nếu file config có chứa API Key hoặc thông tin cá nhân
+configs/credentials.yaml
+configs/local_settings.py
+
+NGOẠI LỆ: Không chặn file .gitkeep để giữ cấu trúc thư mục
+!**/.gitkeep
