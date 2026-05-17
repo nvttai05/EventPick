@@ -1,0 +1,20 @@
+======================================================================
+THÔNG SỐ CHẠY PIPELINE LÀM SẠCH DỮ LIỆU (DATA CLEANING REPORT)
+======================================================================
+[Tổng quan tập dữ liệu sau khi nới lỏng bộ lọc]:
+- Tổng số khuôn mặt đưa vào xử lý: 69685
+- Tổng số khuôn mặt ĐẠT CHUẨN (Passed): 38884 (Tỷ lệ: 55.8%)
+- Tổng số khuôn mặt BỊ LOẠI BỎ (Filtered): 30801 (Tỷ lệ: 44.2%)
+
+[Thống kê chi tiết các tiêu chí loại bỏ]:
+(Lưu ý: Một khuôn mặt có thể vi phạm nhiều lỗi cùng lúc)
+1. Không tìm thấy file ảnh vật lý (File Not Found): 0 mặt
+2. Ảnh bị nhòe/mất nét (Blurry Face):      23019 mặt
+3. Ánh sáng lỗi (Quá tối/Cháy sáng):       189 mặt
+4. Độ tương phản kém (Low Contrast):       33 mặt
+5. Góc nghiêng quá lớn (Extreme Pose):     36 mặt
+6. Trùng lặp tuyệt đối (Exact Duplicate):  141 mặt
+7. Gần trùng lặp chụp liên thanh (Near-Dup): 7818 mặt
+8. Nhiễu Detector (Confidence < 0.50):     0 mặt
+9. Ảnh lỗi không đọc được (Corrupted):     0 mặt
+======================================================================
