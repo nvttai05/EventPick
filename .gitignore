@@ -1,0 +1,47 @@
+# Python virtual environment
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Data folders
+data/
+dataset/
+datasets/
+raw/
+processed/
+
+# Model checkpoints / weights
+checkpoints/
+models/
+*.pth
+*.pt
+*.onnx
+*.h5
+*.pkl
+*.joblib
+
+# Logs
+logs/
+runs/
+wandb/
+mlruns/
+
+# IDE / editor
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
