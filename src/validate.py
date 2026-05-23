@@ -1,317 +1,188 @@
 import random
+import sys
 from collections import defaultdict
 
 import numpy as np
 import torch
+
 from tqdm import tqdm
 
-# ============================================================
-# 1. EXTRACT EMBEDDINGS
-# ============================================================
 
+# EXTRACT EMBEDDINGS
 @torch.no_grad()
-def extract_embeddings(model, loader, device):
-    """
-    Trích xuất embedding cho toàn bộ validation set.
-
-    Output:
-    - embeddings: numpy array shape (N, embedding_dim), đã L2 normalize
-    - labels: numpy array shape (N,)
-    """
+def extract_embeddings(model,loader,device):
     model.eval()
 
     all_embeddings = []
     all_labels = []
 
-    for images, targets in tqdm(loader, desc="Validating - extracting embeddings"):
+    for images, labels in tqdm(loader, desc="Extract embeddings", colour="yellow", file=sys.stdout):
         images = images.to(device, non_blocking=True)
-
         embeddings = model(images)
-
-        # Model của bạn đã normalize trong forward,
-        # nhưng normalize lại lần nữa để đảm bảo an toàn.
-        embeddings = torch.nn.functional.normalize(
-            embeddings,
-            p=2,
-            dim=1
-        )
-
-        all_embeddings.append(embeddings.cpu().numpy())
-        all_labels.append(targets.numpy())
+        all_embeddings.append(embeddings.cpu())
+        all_labels.append(labels)
 
     if len(all_embeddings) == 0:
-        return np.array([]), np.array([])
+        return None, None
 
-    all_embeddings = np.concatenate(all_embeddings, axis=0)
-    all_labels = np.concatenate(all_labels, axis=0)
+    all_embeddings = torch.cat(all_embeddings, dim=0)
+    all_labels = torch.cat(all_labels, dim=0)
 
     return all_embeddings, all_labels
 
 
-# ============================================================
-# 2. PAIR SAMPLING
-# ============================================================
-
-def build_label_to_indices(labels):
-    """
-    Tạo mapping:
-        label -> danh sách index ảnh thuộc label đó
-    """
+# SPLIT GALLERY / QUERY
+def build_gallery_query_sets(embeddings, labels, gallery_per_person=1):
     label_to_indices = defaultdict(list)
-
-    for idx, label in enumerate(labels):
+    labels_np = labels.numpy()
+    for idx, label in enumerate(labels_np):
         label_to_indices[int(label)].append(idx)
 
-    return label_to_indices
+    gallery_indices = []
+    query_indices = []
 
+    for label, indices in label_to_indices.items():
+        if len(indices) < 2:
+            continue
+        random.shuffle(indices)
 
-def sample_positive_pairs(label_to_indices, num_pairs):
-    """
-    Positive pair = 2 ảnh cùng class/người.
-    """
-    pairs = []
+        gallery = indices[:gallery_per_person]
+        query = indices[gallery_per_person:]
 
-    valid_labels = [
-        label for label, indices in label_to_indices.items()
-        if len(indices) >= 2
-    ]
+        if len(query) == 0:
+            continue
 
-    if len(valid_labels) == 0:
-        return pairs
+        gallery_indices.extend(gallery)
+        query_indices.extend(query)
 
-    for _ in range(num_pairs):
-        label = random.choice(valid_labels)
-        i, j = random.sample(label_to_indices[label], 2)
-        pairs.append((i, j, 1))
+    if len(gallery_indices) == 0:
+        return None
 
-    return pairs
+    gallery_embeddings = embeddings[gallery_indices]
+    gallery_labels = labels[gallery_indices]
 
+    query_embeddings = embeddings[query_indices]
+    query_labels = labels[query_indices]
 
-def sample_negative_pairs(label_to_indices, num_pairs):
-    """
-    Negative pair = 2 ảnh khác class/người.
-    """
-    pairs = []
+    return {
+        "gallery_embeddings": gallery_embeddings,
+        "gallery_labels": gallery_labels,
+        "query_embeddings": query_embeddings,
+        "query_labels": query_labels,
+    }
 
-    labels = list(label_to_indices.keys())
-
-    if len(labels) < 2:
-        return pairs
-
-    for _ in range(num_pairs):
-        label_a, label_b = random.sample(labels, 2)
-
-        i = random.choice(label_to_indices[label_a])
-        j = random.choice(label_to_indices[label_b])
-
-        pairs.append((i, j, 0))
-
-    return pairs
-
-
-def sample_validation_pairs(
-    labels,
-    num_positive_pairs=10000,
-    num_negative_pairs=10000,
-):
-    """
-    Lấy mẫu pairwise validation thay vì so toàn bộ N^2 cặp.
-    """
-    label_to_indices = build_label_to_indices(labels)
-
-    positive_pairs = sample_positive_pairs(
-        label_to_indices,
-        num_positive_pairs
-    )
-
-    negative_pairs = sample_negative_pairs(
-        label_to_indices,
-        num_negative_pairs
-    )
-
-    pairs = positive_pairs + negative_pairs
-    random.shuffle(pairs)
-
-    return pairs
-
-
-# ============================================================
-# 3. METRICS
-# ============================================================
-
-def compute_pairwise_scores(embeddings, pairs):
-    """
-    Tính cosine similarity cho các cặp đã sample.
-
-    Vì embeddings đã L2-normalized:
-        cosine similarity = dot product
-    """
-    similarities = []
-    ground_truths = []
-
-    for i, j, gt_same in pairs:
-        sim = float(np.dot(embeddings[i], embeddings[j]))
-
-        similarities.append(sim)
-        ground_truths.append(gt_same)
-
-    similarities = np.array(similarities, dtype=np.float32)
-    ground_truths = np.array(ground_truths, dtype=np.int64)
-
-    return similarities, ground_truths
-
-
-def evaluate_at_threshold(similarities, ground_truths, threshold):
-    """
-    Tính accuracy tại một threshold cụ thể.
-    """
-    predictions = similarities >= threshold
-    accuracy = np.mean(predictions == ground_truths)
-
-    return float(accuracy)
-
-
-def find_best_threshold(
-    similarities,
-    ground_truths,
-    thresholds=None,
-):
-    """
-    Tìm threshold cho accuracy tốt nhất.
-    """
-    if thresholds is None:
-        thresholds = np.arange(0.20, 0.91, 0.05)
-
-    best_acc = 0.0
-    best_threshold = None
-
-    threshold_results = []
-
-    for threshold in thresholds:
-        acc = evaluate_at_threshold(
-            similarities,
-            ground_truths,
-            threshold
-        )
-
-        threshold_results.append({
-            "threshold": float(threshold),
-            "accuracy": float(acc),
-        })
-
-        if acc > best_acc:
-            best_acc = float(acc)
-            best_threshold = float(threshold)
-
-    return best_acc, best_threshold, threshold_results
-
-
-def compute_extra_stats(similarities, ground_truths):
-    """
-    Tính thêm thống kê similarity cho positive/negative pairs.
-    Dùng để hiểu model đang học tốt hay chưa.
-    """
-    positive_sims = similarities[ground_truths == 1]
-    negative_sims = similarities[ground_truths == 0]
-
-    stats = {}
-
-    if len(positive_sims) > 0:
-        stats["positive_mean"] = float(np.mean(positive_sims))
-        stats["positive_median"] = float(np.median(positive_sims))
-        stats["positive_min"] = float(np.min(positive_sims))
-        stats["positive_max"] = float(np.max(positive_sims))
-    else:
-        stats["positive_mean"] = None
-        stats["positive_median"] = None
-        stats["positive_min"] = None
-        stats["positive_max"] = None
-
-    if len(negative_sims) > 0:
-        stats["negative_mean"] = float(np.mean(negative_sims))
-        stats["negative_median"] = float(np.median(negative_sims))
-        stats["negative_min"] = float(np.min(negative_sims))
-        stats["negative_max"] = float(np.max(negative_sims))
-    else:
-        stats["negative_mean"] = None
-        stats["negative_median"] = None
-        stats["negative_min"] = None
-        stats["negative_max"] = None
-
-    return stats
-
-
-# ============================================================
-# 4. MAIN VALIDATE FUNCTION
-# ============================================================
-
+# RETRIEVAL METRICS
 @torch.no_grad()
-def validate(
-    model,
-    loader,
-    device,
-    thresholds=None,
-    num_positive_pairs=10000,
-    num_negative_pairs=10000,
+def compute_recall_at_k(query_embeddings, query_labels, gallery_embeddings, gallery_labels, ks=(1, 5, 10)):
+    results = {}
+    similarity_matrix = torch.mm(query_embeddings, gallery_embeddings.t())
+    max_k = max(ks)
+
+    # top-k nearest gallery
+    topk_indices = torch.topk(similarity_matrix, k=max_k, dim=1).indices
+
+    for k in ks:
+        correct = 0
+        for i in range(len(query_labels)):
+            query_label = query_labels[i]
+
+            retrieved_indices = topk_indices[i, :k]
+
+            retrieved_labels = gallery_labels[retrieved_indices]
+
+            # nếu trong top-k có đúng person
+            if (retrieved_labels == query_label).any():
+                correct += 1
+
+        recall_k = correct / len(query_labels)
+        results[f"recall@{k}"] = float(recall_k)
+    return results
+
+# SIMILARITY STATS
+@torch.no_grad()
+def compute_similarity_stats(
+    query_embeddings,
+    query_labels,
+    gallery_embeddings,
+    gallery_labels
 ):
-    """
-    Validation cho face embedding model.
 
-    Cách đánh giá:
-    - Extract embedding cho validation set
-    - Sample positive pairs: cùng người
-    - Sample negative pairs: khác người
-    - Tính cosine similarity
-    - Tìm threshold tốt nhất
-    - Trả về best accuracy
+    similarity_matrix = torch.mm(query_embeddings, gallery_embeddings.t())
 
-    Hàm này trả về 1 số float để tương thích với train.py:
-        val_acc = validate(...)
-    """
+    positive_similarities = []
+    negative_similarities = []
 
-    embeddings, labels = extract_embeddings(
-        model=model,
-        loader=loader,
-        device=device
-    )
+    for i in range(len(query_labels)):
+        query_label = query_labels[i]
+        similarities = similarity_matrix[i]
+        positive_mask = (gallery_labels == query_label)
+        negative_mask = (gallery_labels != query_label)
+        positive_sims = similarities[positive_mask]
+        negative_sims = similarities[negative_mask]
 
-    if len(embeddings) == 0:
-        print("[VALIDATION WARNING] Không có embedding nào.")
-        return 0.0
+        if len(positive_sims) > 0:
+            positive_similarities.extend(positive_sims.cpu().tolist())
 
-    pairs = sample_validation_pairs(
-        labels=labels,
-        num_positive_pairs=num_positive_pairs,
-        num_negative_pairs=num_negative_pairs,
-    )
+        if len(negative_sims) > 0:
+            negative_similarities.extend(negative_sims.cpu().tolist())
+    positive_mean = float(np.mean(positive_similarities))
+    negative_mean = float(np.mean(negative_similarities))
+    positive_std = float(np.std(positive_similarities))
+    negative_std = float(np.std(negative_similarities))
+    return {
+        "positive_mean": positive_mean,
+        "negative_mean": negative_mean,
+        "positive_std": positive_std,
+        "negative_std": negative_std,
+    }
 
-    if len(pairs) == 0:
-        print("[VALIDATION WARNING] Không tạo được validation pairs.")
-        return 0.0
+# MAIN VALIDATE
+@torch.no_grad()
+def validate(model, loader, device, gallery_per_person=1, ks=(1, 5, 10)):
+    # EXTRACT EMBEDDINGS
+    embeddings, labels = extract_embeddings(model=model, loader=loader, device=device)
 
-    similarities, ground_truths = compute_pairwise_scores(
+    if embeddings is None:
+        print("[VALIDATION WARNING] No embeddings extracted.")
+        return {"recall@1": 0.0}
+
+    # BUILD GALLERY / QUERY
+    split_data = build_gallery_query_sets(
         embeddings=embeddings,
-        pairs=pairs,
+        labels=labels,
+        gallery_per_person=gallery_per_person
     )
 
-    best_acc, best_threshold, threshold_results = find_best_threshold(
-        similarities=similarities,
-        ground_truths=ground_truths,
-        thresholds=thresholds,
+    if split_data is None:
+        print("[VALIDATION WARNING] Cannot build gallery/query sets.")
+        return {"recall@1": 0.0}
+
+    gallery_embeddings = split_data["gallery_embeddings"].to(device)
+    gallery_labels = split_data["gallery_labels"].to(device)
+    query_embeddings = split_data["query_embeddings"].to(device)
+    query_labels = split_data["query_labels"].to(device)
+
+    # COMPUTE RETRIEVAL METRICS
+    metrics = compute_recall_at_k(
+        query_embeddings=query_embeddings,
+        query_labels=query_labels,
+        gallery_embeddings=gallery_embeddings,
+        gallery_labels=gallery_labels,
+        ks=ks
     )
 
-    stats = compute_extra_stats(
-        similarities=similarities,
-        ground_truths=ground_truths,
+    similarity_stats = compute_similarity_stats(
+        query_embeddings=query_embeddings,
+        query_labels=query_labels,
+        gallery_embeddings=gallery_embeddings,
+        gallery_labels=gallery_labels,
     )
+    metrics.update(similarity_stats)
 
-    print(
-        "Validation | "
-        f"best_acc={best_acc:.4f} | "
-        f"best_threshold={best_threshold:.2f} | "
-        f"pairs={len(pairs)} | "
-        f"pos_mean={stats['positive_mean']:.4f} | "
-        f"neg_mean={stats['negative_mean']:.4f}"
-    )
+    print("\n========== VALIDATION ==========")
+    for k, value in metrics.items():
+        print(
+            f"{k.upper():<12}: {value:.4f}")
+    print("================================\n")
 
-    return best_acc
+    return metrics

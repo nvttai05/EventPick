@@ -65,3 +65,11 @@ Sau khi train xong:
     Output:
     Toàn bộ ảnh của người đó
     trong mọi event
+
+9. Sau khi có baseline tốt
+mới thêm:
+EarlyStopping
+TTA
+FAISS
+hard negative mining
+re-ranking.

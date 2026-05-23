@@ -46,8 +46,8 @@ def parse_args():
         help="Backbone model"
     )
 
-    parser.add_argument("--batch_size", type=int, default=32)
-    parser.add_argument("--epochs", type=int, default=30)
+    parser.add_argument("--batch_size", type=int, default=64)
+    parser.add_argument("--epochs", type=int, default=50)
     parser.add_argument("--lr", type=float, default=1e-4)
     parser.add_argument("--embedding_dim", type=int, default=512)
     parser.add_argument("--num_workers", type=int, default=4)
@@ -214,21 +214,18 @@ def main():
         lr=args.lr,
         weight_decay=1e-4
     )
-
+    # giảm mà ko dựa vào cái gì
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer,
         T_max=args.epochs
     )
 
-    scaler = torch.amp.GradScaler(
-        "cuda",
-        enabled=(args.use_amp and device == "cuda")
-    )
+    scaler = torch.amp.GradScaler("cuda", enabled=(args.use_amp and device == "cuda"))
 
     # ------------------------------------------------------------
     # Train loop
     # ------------------------------------------------------------
-    best_val_acc = -1.0
+    best_recall1 = -float("inf")
     global_step = 0
 
     print("\nStart training from scratch...")
@@ -240,12 +237,7 @@ def main():
 
         loss_meter = AverageMeter()
 
-        progress_bar = tqdm(
-            train_loader,
-            desc=f"Epoch {epoch + 1}/{args.epochs}",
-            colour="cyan",
-            file=sys.stdout
-        )
+        progress_bar = tqdm(train_loader, desc=f"Epoch {epoch + 1}/{args.epochs}", colour="cyan", file=sys.stdout)
 
         for images, labels in progress_bar:
             images = images.to(device, non_blocking=True)
@@ -253,10 +245,7 @@ def main():
 
             optimizer.zero_grad(set_to_none=True)
 
-            with torch.amp.autocast(
-                "cuda",
-                enabled=(args.use_amp and device == "cuda")
-            ):
+            with torch.amp.autocast("cuda", enabled=(args.use_amp and device == "cuda")):
                 embeddings = model(images)
                 loss = criterion(embeddings, labels)
 
@@ -268,10 +257,7 @@ def main():
 
             current_lr = optimizer.param_groups[0]["lr"]
 
-            progress_bar.set_postfix({
-                "loss": f"{loss_meter.avg:.4f}",
-                "lr": f"{current_lr:.6f}"
-            })
+            progress_bar.set_postfix({"loss": f"{loss_meter.avg:.4f}", "lr": f"{current_lr:.6f}"})
 
             writer.add_scalar("Train/Step_Loss", loss.item(), global_step)
             global_step += 1
@@ -281,27 +267,32 @@ def main():
         # --------------------------------------------------------
         model.eval()
 
-        val_acc = validate(
-            model=model,
-            loader=val_loader,
-            device=device,
-        )
-
+        val_metrics = validate(model=model, loader=val_loader, device=device,)
         scheduler.step()
 
         epoch_loss = loss_meter.avg
         current_lr = optimizer.param_groups[0]["lr"]
 
+        recall1 = val_metrics["recall@1"]
+        recall5 = val_metrics["recall@5"]
+        recall10 = val_metrics["recall@10"]
+
         print(
-            f"Epoch [{epoch + 1}/{args.epochs}] "
+            f"Epoch [{epoch + 1}/{args.epochs}] | "
             f"Loss: {epoch_loss:.4f} | "
-            f"Val Accuracy: {val_acc:.4f} | "
+            f"R@1: {recall1:.4f} | "
+            f"R@5: {recall5:.4f} | "
+            f"R@10: {recall10:.4f} | "
             f"LR: {current_lr:.6f}"
         )
 
         writer.add_scalar("Train/Epoch_Loss", epoch_loss, epoch)
         writer.add_scalar("Train/Learning_Rate", current_lr, epoch)
-        writer.add_scalar("Validation/Accuracy", val_acc, epoch)
+        writer.add_scalar("Validation/Recall@1", recall1, epoch)
+        writer.add_scalar("Validation/Recall@5", recall5, epoch)
+        writer.add_scalar("Validation/Recall@10", recall10, epoch)
+        writer.add_scalar("Validation/Positive_Mean", val_metrics["positive_mean"], epoch)
+        writer.add_scalar("Validation/Negative_Mean", val_metrics["negative_mean"], epoch)
 
         # --------------------------------------------------------
         # Save last checkpoint mỗi epoch
@@ -315,7 +306,7 @@ def main():
             checkpoint_path=last_path,
             criterion=criterion,
             scheduler=scheduler,
-            best_val_acc=best_val_acc,
+            best_val_acc=best_recall1,
         )
 
         print(f"Saved last checkpoint: {last_path}")
@@ -341,7 +332,7 @@ def main():
                 checkpoint_path=checkpoint_path,
                 criterion=criterion,
                 scheduler=scheduler,
-                best_val_acc=best_val_acc,
+                best_val_acc=best_recall1,
             )
 
             print(f"Saved snapshot checkpoint: {checkpoint_path}")
@@ -349,8 +340,8 @@ def main():
         # --------------------------------------------------------
         # Save best checkpoint
         # --------------------------------------------------------
-        if val_acc > best_val_acc:
-            best_val_acc = val_acc
+        if recall1 > best_recall1:
+            best_recall1 = recall1
 
             best_path = os.path.join(checkpoint_dir, "best.pth")
 
@@ -361,7 +352,7 @@ def main():
                 checkpoint_path=best_path,
                 criterion=criterion,
                 scheduler=scheduler,
-                best_val_acc=best_val_acc,
+                best_val_acc=best_recall1,
             )
 
             print(f"Saved best checkpoint: {best_path}")
@@ -370,11 +361,10 @@ def main():
 
     print("=" * 80)
     print("Training completed.")
-    print(f"Best Val Accuracy: {best_val_acc:.4f}")
+    print(f"Best Val Accuracy: {best_recall1:.4f}")
     print(f"Checkpoints saved to: {checkpoint_dir}")
     print(f"TensorBoard logs saved to: {log_dir}")
     print("=" * 80)
-
 
 if __name__ == "__main__":
     main()
