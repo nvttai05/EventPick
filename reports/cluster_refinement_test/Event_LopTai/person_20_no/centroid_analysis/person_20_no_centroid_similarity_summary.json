@@ -1,0 +1,42 @@
+{
+    "test_scope": "single_cluster_centroid_similarity_analysis",
+    "event_version": "Event_LopTai",
+    "cluster_name": "person_20_no",
+    "num_embeddings": 576,
+    "embedding_dim": 512,
+    "centroid_l2_norm": 0.9999999403953552,
+    "cosine_similarity_to_centroid_stats": {
+        "min": 0.6919606924057007,
+        "mean": 0.8665879368782043,
+        "median": 0.8733783960342407,
+        "max": 0.9533724188804626,
+        "std": 0.042678382247686386,
+        "p05": 0.7891999185085297,
+        "p25": 0.8474037796258926,
+        "p75": 0.8944351226091385,
+        "p95": 0.9227331429719925
+    },
+    "cosine_distance_to_centroid_stats": {
+        "min": 0.046627581119537354,
+        "mean": 0.13341200351715088,
+        "median": 0.12662163376808167,
+        "max": 0.3080393075942993,
+        "std": 0.042678385972976685,
+        "p05": 0.07726685702800751,
+        "p25": 0.10556487739086151,
+        "p75": 0.15259622037410736,
+        "p95": 0.21080008149147034
+    },
+    "review_config": {
+        "top_k_closest": 30,
+        "top_k_farthest": 30
+    },
+    "outputs": {
+        "analysis_csv": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\centroid_analysis\\person_20_no_centroid_similarity_analysis.csv",
+        "summary_json": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\centroid_analysis\\person_20_no_centroid_similarity_summary.json",
+        "histogram": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\centroid_analysis\\visualizations\\person_20_no_centroid_similarity_histogram.png",
+        "top_closest_montage": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\centroid_analysis\\visualizations\\person_20_no_top_closest_to_centroid.jpg",
+        "top_farthest_montage": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\centroid_analysis\\visualizations\\person_20_no_top_farthest_from_centroid.jpg",
+        "log_file": "D:\\Hoctap\\CK_KHDL\\EventPick\\logs\\cluster_refinement_test\\Event_LopTai\\person_20_no\\centroid_similarity_analysis.log"
+    }
+}

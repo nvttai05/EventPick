@@ -1,0 +1,43 @@
+{
+    "event_version": "_manual_test",
+    "cluster_name": "test",
+    "method": "AgglomerativeClustering",
+    "metric": "cosine",
+    "linkage": "complete",
+    "distance_threshold": 0.24,
+    "num_faces": 154,
+    "num_subclusters": 14,
+    "largest_cluster_size": 48,
+    "smallest_cluster_size": 2,
+    "cluster_sizes_desc": [
+        48,
+        30,
+        14,
+        12,
+        11,
+        9,
+        5,
+        5,
+        4,
+        4,
+        4,
+        3,
+        3,
+        2
+    ],
+    "silhouette_score_cosine": 0.2805596888065338,
+    "outputs": {
+        "assignments_csv": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\subclustering_agglomerative_sweep\\complete_thr_0p24\\test_complete_thr_0p24_assignments.csv",
+        "montages_dir": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\subclustering_agglomerative_sweep\\complete_thr_0p24\\montages",
+        "montage_files": [
+            "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\subclustering_agglomerative_sweep\\complete_thr_0p24\\montages\\rank_01_subcluster_000_size_0048.jpg",
+            "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\subclustering_agglomerative_sweep\\complete_thr_0p24\\montages\\rank_02_subcluster_003_size_0030.jpg",
+            "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\subclustering_agglomerative_sweep\\complete_thr_0p24\\montages\\rank_03_subcluster_008_size_0014.jpg",
+            "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\subclustering_agglomerative_sweep\\complete_thr_0p24\\montages\\rank_04_subcluster_006_size_0012.jpg",
+            "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\subclustering_agglomerative_sweep\\complete_thr_0p24\\montages\\rank_05_subcluster_001_size_0011.jpg",
+            "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\subclustering_agglomerative_sweep\\complete_thr_0p24\\montages\\rank_06_subcluster_002_size_0009.jpg",
+            "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\subclustering_agglomerative_sweep\\complete_thr_0p24\\montages\\rank_07_subcluster_007_size_0005.jpg",
+            "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\subclustering_agglomerative_sweep\\complete_thr_0p24\\montages\\rank_08_subcluster_013_size_0005.jpg"
+        ]
+    }
+}

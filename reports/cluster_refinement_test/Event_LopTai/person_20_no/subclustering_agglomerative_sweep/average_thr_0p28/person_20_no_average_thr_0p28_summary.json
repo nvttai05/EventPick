@@ -1,0 +1,27 @@
+{
+    "event_version": "Event_LopTai",
+    "cluster_name": "person_20_no",
+    "method": "AgglomerativeClustering",
+    "metric": "cosine",
+    "linkage": "average",
+    "distance_threshold": 0.28,
+    "num_faces": 576,
+    "num_subclusters": 3,
+    "largest_cluster_size": 216,
+    "smallest_cluster_size": 161,
+    "cluster_sizes_desc": [
+        216,
+        199,
+        161
+    ],
+    "silhouette_score_cosine": 0.5154310464859009,
+    "outputs": {
+        "assignments_csv": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\subclustering_agglomerative_sweep\\average_thr_0p28\\person_20_no_average_thr_0p28_assignments.csv",
+        "montages_dir": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\subclustering_agglomerative_sweep\\average_thr_0p28\\montages",
+        "montage_files": [
+            "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\subclustering_agglomerative_sweep\\average_thr_0p28\\montages\\rank_01_subcluster_000_size_0216.jpg",
+            "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\subclustering_agglomerative_sweep\\average_thr_0p28\\montages\\rank_02_subcluster_002_size_0199.jpg",
+            "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\subclustering_agglomerative_sweep\\average_thr_0p28\\montages\\rank_03_subcluster_001_size_0161.jpg"
+        ]
+    }
+}
