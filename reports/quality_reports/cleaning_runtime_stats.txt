@@ -1,0 +1,19 @@
+======================================================================
+THÔNG SỐ PIPELINE LÀM SẠCH 
+======================================================================
+[Tổng quan tập dữ liệu sau khi nâng sàn 0.70 & Adaptive]:
+- Tổng số khuôn mặt đưa vào xử lý: 69685
+- Tổng số khuôn mặt ĐẠT CHUẨN (Passed): 38538 (Tỷ lệ: 55.3%)
+- Tổng số khuôn mặt BỊ LOẠI BỎ (Filtered): 31147 (Tỷ lệ: 44.7%)
+
+[Thống kê chi tiết các tiêu chí loại bỏ]:
+(Lưu ý: Một khuôn mặt có thể vi phạm nhiều tiêu chí cùng lúc)
+1. Nhiễu cứng Detector (Confidence < 0.70):   14379 mặt
+2. Ảnh bị nhòe/mất nét thích ứng (Blurry):     16083 mặt
+3. Lỗi cấu trúc hình học (Invalid Geometry):   232 mặt
+4. Góc nghiêng quá lớn thích ứng (Pose):       306 mặt
+5. Ánh sáng lỗi (Quá tối/Cháy sáng):          539 mặt
+6. Độ tương phản kém (Low Contrast):          157 mặt
+7. Trùng lặp hình ảnh (Duplicate dHash):      277 mặt
+8. Lỗi đọc file vật lý/Ảnh lỗi kỹ thuật:       0 mặt
+======================================================================
