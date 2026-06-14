@@ -1,0 +1,35 @@
+{
+    "event_version": "Event_LopTai",
+    "source_cluster_name": "person_20_no",
+    "chosen_refinement_config": {
+        "method": "agglomerative",
+        "linkage": "average",
+        "distance_threshold": 0.28
+    },
+    "input_assignments_csv": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\subclustering_agglomerative_sweep\\average_thr_0p28\\person_20_no_average_thr_0p28_assignments.csv",
+    "final_split_output_dir": "D:\\Hoctap\\CK_KHDL\\EventPick\\data\\refined_clusters\\Event_LopTai\\person_20_no_refined",
+    "num_images_in_assignments": 576,
+    "num_images_copied_successfully": 576,
+    "num_images_copy_error": 0,
+    "num_final_subpersons": 3,
+    "original_subcluster_counts": {
+        "0": 216,
+        "1": 161,
+        "2": 199
+    },
+    "subcluster_to_final_subperson_mapping": {
+        "0": "subperson_0",
+        "2": "subperson_1",
+        "1": "subperson_2"
+    },
+    "final_subperson_counts": {
+        "subperson_0": 216,
+        "subperson_1": 199,
+        "subperson_2": 161
+    },
+    "outputs": {
+        "final_assignments_csv": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\final_split\\person_20_no_final_split_assignments.csv",
+        "final_summary_json": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\final_split\\person_20_no_final_split_summary.json",
+        "final_split_log": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\final_split\\final_split_creation.log"
+    }
+}

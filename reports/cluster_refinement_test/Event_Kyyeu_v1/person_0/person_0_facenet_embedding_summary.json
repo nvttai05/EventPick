@@ -1,0 +1,90 @@
+{
+    "test_scope": "single_cluster_embedding_extraction",
+    "event_version": "Event_Kyyeu_v1",
+    "cluster_name": "person_0",
+    "cluster_dir": "D:\\Hoctap\\CK_KHDL\\EventPick\\data\\Event_Kyyeu_v1\\person_0",
+    "embedding_model": {
+        "model": "facenet_pytorch.InceptionResnetV1",
+        "pretrained": "vggface2",
+        "input_size": [
+            160,
+            160
+        ],
+        "normalization_mean": [
+            0.5,
+            0.5,
+            0.5
+        ],
+        "normalization_std": [
+            0.5,
+            0.5,
+            0.5
+        ],
+        "embedding_postprocess": "L2 normalization"
+    },
+    "device": {
+        "torch_device": "cpu",
+        "cuda_available": false,
+        "cuda_device_name": null
+    },
+    "input_images": {
+        "num_images_found": 591,
+        "num_images_success": 591,
+        "num_images_error": 0,
+        "width_stats": {
+            "min": 224,
+            "mean": 224,
+            "max": 224
+        },
+        "height_stats": {
+            "min": 224,
+            "mean": 224,
+            "max": 224
+        }
+    },
+    "embeddings": {
+        "shape": [
+            591,
+            512
+        ],
+        "num_embeddings": 591,
+        "embedding_dim": 512,
+        "raw_l2_norm_stats": {
+            "min": 0.9999998807907104,
+            "mean": 0.9999999829556938,
+            "max": 1.0000001192092896
+        },
+        "normalized_l2_norm_stats": {
+            "min": 0.9999999403953552,
+            "mean": 1.0000000020170776,
+            "max": 1.0000001192092896
+        }
+    },
+    "performance": {
+        "total_runtime_seconds": 30.74423109999998,
+        "inference_time_ms": {
+            "min": 25.42600000015227,
+            "mean": 31.398619289336136,
+            "median": 31.23649999997724,
+            "max": 46.53259999986403
+        }
+    },
+    "pairwise_cosine_distance_in_cluster": {
+        "num_pairs": 174345,
+        "min": 0.0024203062057495117,
+        "mean": 0.1634771227836609,
+        "median": 0.15530812740325928,
+        "max": 0.530062198638916,
+        "std": 0.07391298562288284,
+        "p05": 0.0551470160484314,
+        "p25": 0.10816299915313721,
+        "p75": 0.21155405044555664,
+        "p95": 0.2977229475975035
+    },
+    "outputs": {
+        "embeddings_npy": "D:\\Hoctap\\CK_KHDL\\EventPick\\data\\embeddings\\cluster_refinement_test\\Event_Kyyeu_v1\\person_0\\person_0_facenet_embeddings.npy",
+        "embedding_metadata_csv": "D:\\Hoctap\\CK_KHDL\\EventPick\\data\\embeddings\\cluster_refinement_test\\Event_Kyyeu_v1\\person_0\\person_0_facenet_embedding_metadata.csv",
+        "summary_json": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_Kyyeu_v1\\person_0\\person_0_facenet_embedding_summary.json",
+        "log_file": "D:\\Hoctap\\CK_KHDL\\EventPick\\logs\\cluster_refinement_test\\Event_Kyyeu_v1\\person_0\\facenet_embedding_extraction.log"
+    }
+}

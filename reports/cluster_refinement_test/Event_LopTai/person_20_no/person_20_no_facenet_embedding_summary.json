@@ -1,0 +1,90 @@
+{
+    "test_scope": "single_cluster_embedding_extraction",
+    "event_version": "Event_LopTai",
+    "cluster_name": "person_20_no",
+    "cluster_dir": "D:\\Hoctap\\CK_KHDL\\EventPick\\data\\Event_LopTai\\person_20_no",
+    "embedding_model": {
+        "model": "facenet_pytorch.InceptionResnetV1",
+        "pretrained": "vggface2",
+        "input_size": [
+            160,
+            160
+        ],
+        "normalization_mean": [
+            0.5,
+            0.5,
+            0.5
+        ],
+        "normalization_std": [
+            0.5,
+            0.5,
+            0.5
+        ],
+        "embedding_postprocess": "L2 normalization"
+    },
+    "device": {
+        "torch_device": "cuda",
+        "cuda_available": true,
+        "cuda_device_name": "NVIDIA GeForce RTX 3060"
+    },
+    "input_images": {
+        "num_images_found": 576,
+        "num_images_success": 576,
+        "num_images_error": 0,
+        "width_stats": {
+            "min": 224,
+            "mean": 224,
+            "max": 224
+        },
+        "height_stats": {
+            "min": 224,
+            "mean": 224,
+            "max": 224
+        }
+    },
+    "embeddings": {
+        "shape": [
+            576,
+            512
+        ],
+        "num_embeddings": 576,
+        "embedding_dim": 512,
+        "raw_l2_norm_stats": {
+            "min": 0.9999998807907104,
+            "mean": 0.9999999839605557,
+            "max": 1.0000001192092896
+        },
+        "normalized_l2_norm_stats": {
+            "min": 0.9999999403953552,
+            "mean": 1.0000000020696058,
+            "max": 1.0000001192092896
+        }
+    },
+    "performance": {
+        "total_runtime_seconds": 12.784664399999201,
+        "inference_time_ms": {
+            "min": 16.034299999773793,
+            "mean": 19.417331597206083,
+            "median": 18.239799999719253,
+            "max": 312.6345999999103
+        }
+    },
+    "pairwise_cosine_distance_in_cluster": {
+        "num_pairs": 165600,
+        "min": 0.0026879310607910156,
+        "mean": 0.24945823848247528,
+        "median": 0.26094430685043335,
+        "max": 0.6762507557868958,
+        "std": 0.10413926839828491,
+        "p05": 0.07407187819480895,
+        "p25": 0.16987678408622742,
+        "p75": 0.32230226695537567,
+        "p95": 0.4116355687379837
+    },
+    "outputs": {
+        "embeddings_npy": "D:\\Hoctap\\CK_KHDL\\EventPick\\data\\embeddings\\cluster_refinement_test\\Event_LopTai\\person_20_no\\person_20_no_facenet_embeddings.npy",
+        "embedding_metadata_csv": "D:\\Hoctap\\CK_KHDL\\EventPick\\data\\embeddings\\cluster_refinement_test\\Event_LopTai\\person_20_no\\person_20_no_facenet_embedding_metadata.csv",
+        "summary_json": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_LopTai\\person_20_no\\person_20_no_facenet_embedding_summary.json",
+        "log_file": "D:\\Hoctap\\CK_KHDL\\EventPick\\logs\\cluster_refinement_test\\Event_LopTai\\person_20_no\\facenet_embedding_extraction.log"
+    }
+}

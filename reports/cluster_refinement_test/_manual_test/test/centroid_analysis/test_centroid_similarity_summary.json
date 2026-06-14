@@ -1,0 +1,42 @@
+{
+    "test_scope": "single_cluster_centroid_similarity_analysis",
+    "event_version": "_manual_test",
+    "cluster_name": "test",
+    "num_embeddings": 154,
+    "embedding_dim": 512,
+    "centroid_l2_norm": 0.9999999403953552,
+    "cosine_similarity_to_centroid_stats": {
+        "min": 0.34588438272476196,
+        "mean": 0.7487365007400513,
+        "median": 0.8506826162338257,
+        "max": 0.9185145497322083,
+        "std": 0.18187907338142395,
+        "p05": 0.40662293285131457,
+        "p25": 0.5607198923826218,
+        "p75": 0.886125847697258,
+        "p95": 0.906763008236885
+    },
+    "cosine_distance_to_centroid_stats": {
+        "min": 0.08148545026779175,
+        "mean": 0.25126349925994873,
+        "median": 0.1493174135684967,
+        "max": 0.654115617275238,
+        "std": 0.18187907338142395,
+        "p05": 0.09323699176311492,
+        "p25": 0.113874152302742,
+        "p75": 0.43928010761737823,
+        "p95": 0.5933770775794982
+    },
+    "review_config": {
+        "top_k_closest": 30,
+        "top_k_farthest": 30
+    },
+    "outputs": {
+        "analysis_csv": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\centroid_analysis\\test_centroid_similarity_analysis.csv",
+        "summary_json": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\centroid_analysis\\test_centroid_similarity_summary.json",
+        "histogram": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\centroid_analysis\\visualizations\\test_centroid_similarity_histogram.png",
+        "top_closest_montage": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\centroid_analysis\\visualizations\\test_top_closest_to_centroid.jpg",
+        "top_farthest_montage": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\centroid_analysis\\visualizations\\test_top_farthest_from_centroid.jpg",
+        "log_file": "D:\\Hoctap\\CK_KHDL\\EventPick\\logs\\cluster_refinement_test\\_manual_test\\test\\centroid_similarity_analysis.log"
+    }
+}

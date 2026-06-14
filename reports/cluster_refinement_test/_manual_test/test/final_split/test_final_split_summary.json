@@ -1,0 +1,38 @@
+{
+    "event_version": "_manual_test",
+    "source_cluster_name": "test",
+    "chosen_refinement_config": {
+        "method": "agglomerative",
+        "linkage": "average",
+        "distance_threshold": 0.24
+    },
+    "input_assignments_csv": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\subclustering_agglomerative_sweep\\average_thr_0p24\\test_average_thr_0p24_assignments.csv",
+    "final_split_output_dir": "D:\\Hoctap\\CK_KHDL\\EventPick\\data\\refined_clusters\\_manual_test\\test_refined",
+    "num_images_in_assignments": 154,
+    "num_images_copied_successfully": 154,
+    "num_images_copy_error": 0,
+    "num_final_subpersons": 4,
+    "original_subcluster_counts": {
+        "0": 106,
+        "1": 34,
+        "2": 9,
+        "3": 5
+    },
+    "subcluster_to_final_subperson_mapping": {
+        "0": "subperson_0",
+        "1": "subperson_1",
+        "2": "subperson_2",
+        "3": "subperson_3"
+    },
+    "final_subperson_counts": {
+        "subperson_0": 106,
+        "subperson_1": 34,
+        "subperson_2": 9,
+        "subperson_3": 5
+    },
+    "outputs": {
+        "final_assignments_csv": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\final_split\\test_final_split_assignments.csv",
+        "final_summary_json": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\final_split\\test_final_split_summary.json",
+        "final_split_log": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\final_split\\final_split_creation.log"
+    }
+}

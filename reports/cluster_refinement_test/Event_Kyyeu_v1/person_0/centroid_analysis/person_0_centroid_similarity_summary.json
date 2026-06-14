@@ -1,0 +1,42 @@
+{
+    "test_scope": "single_cluster_centroid_similarity_analysis",
+    "event_version": "Event_Kyyeu_v1",
+    "cluster_name": "person_0",
+    "num_embeddings": 591,
+    "embedding_dim": 512,
+    "centroid_l2_norm": 1.0,
+    "cosine_similarity_to_centroid_stats": {
+        "min": 0.7417775392532349,
+        "mean": 0.9147674441337585,
+        "median": 0.9257355332374573,
+        "max": 0.9755896329879761,
+        "std": 0.042506273835897446,
+        "p05": 0.8270764350891113,
+        "p25": 0.8914108872413635,
+        "p75": 0.9478712677955627,
+        "p95": 0.9637110829353333
+    },
+    "cosine_distance_to_centroid_stats": {
+        "min": 0.024410367012023926,
+        "mean": 0.08523253351449966,
+        "median": 0.07426446676254272,
+        "max": 0.25822246074676514,
+        "std": 0.042506277561187744,
+        "p05": 0.03628891706466675,
+        "p25": 0.052128732204437256,
+        "p75": 0.10858911275863647,
+        "p95": 0.17292356491088867
+    },
+    "review_config": {
+        "top_k_closest": 30,
+        "top_k_farthest": 30
+    },
+    "outputs": {
+        "analysis_csv": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_Kyyeu_v1\\person_0\\centroid_analysis\\person_0_centroid_similarity_analysis.csv",
+        "summary_json": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_Kyyeu_v1\\person_0\\centroid_analysis\\person_0_centroid_similarity_summary.json",
+        "histogram": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_Kyyeu_v1\\person_0\\centroid_analysis\\visualizations\\person_0_centroid_similarity_histogram.png",
+        "top_closest_montage": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_Kyyeu_v1\\person_0\\centroid_analysis\\visualizations\\person_0_top_closest_to_centroid.jpg",
+        "top_farthest_montage": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\Event_Kyyeu_v1\\person_0\\centroid_analysis\\visualizations\\person_0_top_farthest_from_centroid.jpg",
+        "log_file": "D:\\Hoctap\\CK_KHDL\\EventPick\\logs\\cluster_refinement_test\\Event_Kyyeu_v1\\person_0\\centroid_similarity_analysis.log"
+    }
+}

@@ -1,0 +1,29 @@
+2026-05-20 00:03:52,562 | INFO | ====================================================================================================
+2026-05-20 00:03:52,562 | INFO | BẮT ĐẦU TẠO FINAL SPLIT CHO CLUSTER person_20_no
+2026-05-20 00:03:52,563 | INFO | ====================================================================================================
+2026-05-20 00:03:52,563 | INFO | Event version: Event_LopTai
+2026-05-20 00:03:52,563 | INFO | Source cluster: person_20_no
+2026-05-20 00:03:52,563 | INFO | Chosen config: method=agglomerative | linkage=average | distance_threshold=0.28
+2026-05-20 00:03:52,563 | INFO | Source assignments CSV: D:\Hoctap\CK_KHDL\EventPick\reports\cluster_refinement_test\Event_LopTai\person_20_no\subclustering_agglomerative_sweep\average_thr_0p28\person_20_no_average_thr_0p28_assignments.csv
+2026-05-20 00:03:52,563 | INFO | Final split output dir: D:\Hoctap\CK_KHDL\EventPick\data\refined_clusters\Event_LopTai\person_20_no_refined
+2026-05-20 00:03:52,568 | INFO | Tổng ảnh trong assignments: 576
+2026-05-20 00:03:52,569 | INFO | Subcluster -> Final subperson mapping:
+2026-05-20 00:03:52,570 | INFO |   subcluster 0 -> subperson_0
+2026-05-20 00:03:52,570 | INFO |   subcluster 2 -> subperson_1
+2026-05-20 00:03:52,570 | INFO |   subcluster 1 -> subperson_2
+2026-05-20 00:03:53,249 | INFO | ====================================================================================================
+2026-05-20 00:03:53,249 | INFO | HOÀN TẤT FINAL SPLIT CHO person_20_no
+2026-05-20 00:03:53,249 | INFO | ====================================================================================================
+2026-05-20 00:03:53,249 | INFO | Tổng ảnh assignments: 576
+2026-05-20 00:03:53,249 | INFO | Copy thành công: 576
+2026-05-20 00:03:53,249 | INFO | Copy lỗi: 0
+2026-05-20 00:03:53,249 | INFO | Số final subperson: 3
+2026-05-20 00:03:53,249 | INFO | Phân bố ảnh theo final subperson:
+2026-05-20 00:03:53,249 | INFO |   subperson_0: 216 ảnh
+2026-05-20 00:03:53,249 | INFO |   subperson_1: 199 ảnh
+2026-05-20 00:03:53,249 | INFO |   subperson_2: 161 ảnh
+2026-05-20 00:03:53,249 | INFO | Đã lưu output split thật: D:\Hoctap\CK_KHDL\EventPick\data\refined_clusters\Event_LopTai\person_20_no_refined
+2026-05-20 00:03:53,249 | INFO | Đã lưu final assignments CSV: D:\Hoctap\CK_KHDL\EventPick\reports\cluster_refinement_test\Event_LopTai\person_20_no\final_split\person_20_no_final_split_assignments.csv
+2026-05-20 00:03:53,249 | INFO | Đã lưu summary JSON: D:\Hoctap\CK_KHDL\EventPick\reports\cluster_refinement_test\Event_LopTai\person_20_no\final_split\person_20_no_final_split_summary.json
+2026-05-20 00:03:53,251 | INFO | Đã lưu log: D:\Hoctap\CK_KHDL\EventPick\reports\cluster_refinement_test\Event_LopTai\person_20_no\final_split\final_split_creation.log
+2026-05-20 00:03:53,251 | INFO | ====================================================================================================

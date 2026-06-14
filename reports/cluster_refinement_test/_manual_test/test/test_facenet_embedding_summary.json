@@ -1,0 +1,90 @@
+{
+    "test_scope": "single_cluster_embedding_extraction",
+    "event_version": "_manual_test",
+    "cluster_name": "test",
+    "cluster_dir": "D:\\Hoctap\\CK_KHDL\\EventPick\\data\\test",
+    "embedding_model": {
+        "model": "facenet_pytorch.InceptionResnetV1",
+        "pretrained": "vggface2",
+        "input_size": [
+            160,
+            160
+        ],
+        "normalization_mean": [
+            0.5,
+            0.5,
+            0.5
+        ],
+        "normalization_std": [
+            0.5,
+            0.5,
+            0.5
+        ],
+        "embedding_postprocess": "L2 normalization"
+    },
+    "device": {
+        "torch_device": "cuda",
+        "cuda_available": true,
+        "cuda_device_name": "NVIDIA GeForce RTX 3060"
+    },
+    "input_images": {
+        "num_images_found": 154,
+        "num_images_success": 154,
+        "num_images_error": 0,
+        "width_stats": {
+            "min": 224,
+            "mean": 224,
+            "max": 224
+        },
+        "height_stats": {
+            "min": 224,
+            "mean": 224,
+            "max": 224
+        }
+    },
+    "embeddings": {
+        "shape": [
+            154,
+            512
+        ],
+        "num_embeddings": 154,
+        "embedding_dim": 512,
+        "raw_l2_norm_stats": {
+            "min": 0.9999999403953552,
+            "mean": 0.9999999829701015,
+            "max": 1.0
+        },
+        "normalized_l2_norm_stats": {
+            "min": 1.0,
+            "mean": 1.0000000015481727,
+            "max": 1.0000001192092896
+        }
+    },
+    "performance": {
+        "total_runtime_seconds": 7.710514200000034,
+        "inference_time_ms": {
+            "min": 22.702299999764364,
+            "mean": 41.02423051946452,
+            "median": 37.066999999751715,
+            "max": 485.0176999998439
+        }
+    },
+    "pairwise_cosine_distance_in_cluster": {
+        "num_pairs": 11781,
+        "min": 0.0032963156700134277,
+        "mean": 0.44226542115211487,
+        "median": 0.25536584854125977,
+        "max": 1.0773829221725464,
+        "std": 0.3354150354862213,
+        "p05": 0.06206405162811279,
+        "p25": 0.13353502750396729,
+        "p75": 0.8012621402740479,
+        "p95": 0.9151589870452881
+    },
+    "outputs": {
+        "embeddings_npy": "D:\\Hoctap\\CK_KHDL\\EventPick\\data\\embeddings\\cluster_refinement_test\\_manual_test\\test\\test_facenet_embeddings.npy",
+        "embedding_metadata_csv": "D:\\Hoctap\\CK_KHDL\\EventPick\\data\\embeddings\\cluster_refinement_test\\_manual_test\\test\\test_facenet_embedding_metadata.csv",
+        "summary_json": "D:\\Hoctap\\CK_KHDL\\EventPick\\reports\\cluster_refinement_test\\_manual_test\\test\\test_facenet_embedding_summary.json",
+        "log_file": "D:\\Hoctap\\CK_KHDL\\EventPick\\logs\\cluster_refinement_test\\_manual_test\\test\\facenet_embedding_extraction.log"
+    }
+}
