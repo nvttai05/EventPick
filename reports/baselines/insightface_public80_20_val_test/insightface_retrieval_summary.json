@@ -1,0 +1,30 @@
+{
+    "baseline": "InsightFace pretrained recognition",
+    "model_name": "buffalo_l",
+    "data_dir": "D:\\Hoctap\\CK_KHDL\\EventPick_v1\\data\\public_80_20\\val",
+    "num_images_success": 500,
+    "num_images_failed": 0,
+    "num_classes": 10,
+    "embedding_shape": [
+        500,
+        512
+    ],
+    "retrieval_metrics": {
+        "recall@1": 0.998,
+        "recall@5": 1.0,
+        "recall@10": 1.0
+    },
+    "similarity_stats": {
+        "positive_mean": 0.5287137879979796,
+        "positive_std": 0.1426345673450646,
+        "negative_mean": -0.001107603954616934,
+        "negative_std": 0.05959209281305924
+    },
+    "runtime_seconds": 38.38636490000499,
+    "outputs": {
+        "embeddings_npy": "D:\\Hoctap\\CK_KHDL\\EventPick_v1\\reports\\baselines\\insightface_public80_20_val_test\\insightface_embeddings.npy",
+        "metadata_csv": "D:\\Hoctap\\CK_KHDL\\EventPick_v1\\reports\\baselines\\insightface_public80_20_val_test\\insightface_embedding_metadata.csv",
+        "failed_csv": "D:\\Hoctap\\CK_KHDL\\EventPick_v1\\reports\\baselines\\insightface_public80_20_val_test\\insightface_failed_images.csv",
+        "summary_json": "D:\\Hoctap\\CK_KHDL\\EventPick_v1\\reports\\baselines\\insightface_public80_20_val_test\\insightface_retrieval_summary.json"
+    }
+}

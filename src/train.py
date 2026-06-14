@@ -12,6 +12,7 @@ from torch.utils.tensorboard import SummaryWriter
 from dataset import FaceDataset
 from model import FaceEmbeddingModel
 from losses import ArcFaceLoss
+from pk import PKSampler
 from transforms import train_transform, eval_transform
 from utils import save_checkpoint, AverageMeter
 from validate import validate
@@ -27,14 +28,14 @@ def parse_args():
     parser.add_argument(
         "--data_dir",
         type=str,
-        default=r"D:\Hoctap\CK_KHDL\EventPick_v1\data\train",
+        default=r"D:\Hoctap\CK_KHDL\EventPick_v1\data\train_final",
         help="Train folder. Structure: train/event/person/images"
     )
 
     parser.add_argument(
         "--val_dir",
         type=str,
-        default=r"D:\Hoctap\CK_KHDL\EventPick_v1\data\detected_faces",
+        default=r"D:\Hoctap\CK_KHDL\EventPick_v1\data\val_final",
         help="Val folder. Structure: detected_faces/Event_Public/person/images"
     )
 
@@ -46,10 +47,10 @@ def parse_args():
         help="Backbone model"
     )
 
-    parser.add_argument("--batch_size", type=int, default=64)
-    parser.add_argument("--epochs", type=int, default=50)
+    parser.add_argument("--batch_size", type=int, default=96)
+    parser.add_argument("--epochs", type=int, default=60)
     parser.add_argument("--lr", type=float, default=1e-4)
-    parser.add_argument("--embedding_dim", type=int, default=512)
+    parser.add_argument("--embedding_dim", type=int, default=256)
     parser.add_argument("--num_workers", type=int, default=4)
 
     parser.add_argument("--checkpoint_dir", type=str, default="./checkpoints")
@@ -60,6 +61,17 @@ def parse_args():
 
     # Lưu snapshot mỗi N epoch
     parser.add_argument("--save_every", type=int, default=5)
+
+    #train bang data public===========================
+    parser.add_argument("--arcface_s", type=float, default=64.0)
+    parser.add_argument("--arcface_m", type=float, default=0.5)
+    parser.add_argument(
+        "--run_name",
+        type=str,
+        default=None,
+        help="Tên run để lưu checkpoint/log riêng. Nếu None thì tự tạo."
+    )
+
 
     return parser.parse_args()
 
@@ -117,6 +129,9 @@ def main():
     print("AMP:", args.use_amp)
     print("Save every:", args.save_every)
     print("=" * 80)
+    # =============================Datapublic
+    print("ArcFace s:", args.arcface_s)
+    print("ArcFace m:", args.arcface_m)
 
     # ------------------------------------------------------------
     # Check folders
@@ -127,7 +142,25 @@ def main():
     # ------------------------------------------------------------
     # Output dirs
     # ------------------------------------------------------------
-    run_name = f"{args.model_name}_emb{args.embedding_dim}_bs{args.batch_size}_lr{args.lr}"
+    # ============================datapub
+    # run_name = f"{args.model_name}_emb{args.embedding_dim}_bs{args.batch_size}_lr{args.lr}"
+    if args.run_name is None:
+        train_tag = os.path.basename(os.path.dirname(args.data_dir.rstrip("\\/")))
+        train_leaf = os.path.basename(args.data_dir.rstrip("\\/"))
+        val_leaf = os.path.basename(args.val_dir.rstrip("\\/"))
+
+        run_name = (
+            f"{args.model_name}"
+            f"_emb{args.embedding_dim}"
+            f"_bs{args.batch_size}"
+            f"_lr{args.lr}"
+            f"_s{args.arcface_s}"
+            f"_m{args.arcface_m}"
+            f"_{train_tag}_{train_leaf}_val_{val_leaf}"
+        )
+    else:
+        run_name = args.run_name
+    print("Run name:", run_name)
 
     checkpoint_dir = os.path.join(args.checkpoint_dir, run_name)
     log_dir = os.path.join(args.log_dir, run_name)
@@ -175,6 +208,19 @@ def main():
     pin_memory = device == "cuda"
     persistent_workers = args.num_workers > 0
 
+    # pk_sampler = PKSampler(
+    #     dataset=train_dataset,
+    #     p=16,
+    #     k=4
+    # )
+    #
+    # train_loader = DataLoader(
+    #     train_dataset,
+    #     batch_sampler=pk_sampler,
+    #     num_workers=args.num_workers,
+    #     pin_memory=pin_memory,
+    #     persistent_workers=persistent_workers,
+    # )
     train_loader = DataLoader(
         train_dataset,
         batch_size=args.batch_size,
@@ -201,12 +247,19 @@ def main():
     model = FaceEmbeddingModel(
         model_name=args.model_name,
         embedding_dim=args.embedding_dim,
-        pretrained=True
+        pretrained=False
     ).to(device)
 
+    # criterion = ArcFaceLoss(
+    #     embedding_size=args.embedding_dim,
+    #     num_classes=num_classes
+    # ).to(device)
+    # ============================================train bằng data public
     criterion = ArcFaceLoss(
         embedding_size=args.embedding_dim,
-        num_classes=num_classes
+        num_classes=num_classes,
+        s=args.arcface_s,
+        m=args.arcface_m,
     ).to(device)
 
     optimizer = torch.optim.AdamW(
@@ -217,7 +270,8 @@ def main():
     # giảm mà ko dựa vào cái gì
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer,
-        T_max=args.epochs
+        T_max=args.epochs,
+        # eta_min=5e-6, # default là 0: eta_min: float = 0.0,
     )
 
     scaler = torch.amp.GradScaler("cuda", enabled=(args.use_amp and device == "cuda"))
@@ -361,7 +415,7 @@ def main():
 
     print("=" * 80)
     print("Training completed.")
-    print(f"Best Val Accuracy: {best_recall1:.4f}")
+    print(f"Best Val Recall@1: {best_recall1:.4f}")
     print(f"Checkpoints saved to: {checkpoint_dir}")
     print(f"TensorBoard logs saved to: {log_dir}")
     print("=" * 80)
